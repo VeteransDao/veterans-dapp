@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = [{ id: 'HOME' }, { id: 'COLLECTIONS' }, { id: 'GUIDES' }];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
@@ -34,20 +34,33 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
+  const navClick = page => {
+    handleCloseNavMenu();
+  };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
-            variant="h6"
+            variant="h5"
             noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            component="h5"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'Trade Winds'
+            }}
           >
-            LOGO
+            veterans dao
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'flex', md: 'none' }
+            }}
+          >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -77,8 +90,8 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map(page => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+                <MenuItem key={page.id} onClick={() => navClick(page)}>
+                  <Typography textAlign="center">{page.id}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -94,11 +107,11 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map(page => (
               <Button
-                key={page}
+                key={page.id}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                {page.id}
               </Button>
             ))}
           </Box>

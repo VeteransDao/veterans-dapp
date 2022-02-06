@@ -9,6 +9,10 @@ export default function Document() {
         <link rel="icon" href="favicon.ico" />
         <meta name="theme-color" content="#000000" />
         <link rel="stylesheet" href="config/theme.css" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Trade+Winds&display=swap"
+          rel="stylesheet"
+        />
         <link rel="apple-touch-icon" href="android-chrome-192x192.png" />
         <link rel="manifest" href="manifest.json" />
         <meta
