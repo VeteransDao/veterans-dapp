@@ -1,11 +1,27 @@
 import Head from 'next/head';
 import '../src/styles/reset.css';
 import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import AppBar from '../src/components/AppBar';
 // import App from 'next/app'
+
+// Dark Color - rgb(30, 33, 37)
+// Lighter Color - rgb(226, 229, 233)
+// Font - White or opacity 0.5
+// Fonts - Gothica, Inconsolata
+const globalTheme = createTheme({
+  palette: {
+    primary: {
+      main: '#1e2125',
+      light: '#e2e5e9',
+      dark: '#0f1011'
+    }
+  }
+});
 
 function VetApp({ Component, pageProps }) {
   return (
@@ -15,7 +31,10 @@ function VetApp({ Component, pageProps }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <CssBaseline />
-      <Component {...pageProps} />
+      <ThemeProvider theme={globalTheme}>
+        <AppBar />
+        <Component {...pageProps} />
+      </ThemeProvider>
     </div>
   );
 }
