@@ -12,12 +12,17 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const pages = [{ id: 'HOME' }, { id: 'COLLECTIONS' }, { id: 'GUIDES' }];
+const pages = [
+  { id: 'HOME' },
+  { id: 'COLLECTIONS', subItems: ['US FIGHTER SERIES', 'AIR MEDAL'] },
+  { id: 'GUIDES', subItems: ['MINTING', 'ROLLOUT', 'FAQS'] }
+];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElSub, setAnchorElSub] = React.useState(null);
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
@@ -25,13 +30,18 @@ const ResponsiveAppBar = () => {
   const handleOpenUserMenu = event => {
     setAnchorElUser(event.currentTarget);
   };
+  const handleOpenSubMenu = (event, page) => {
+    setAnchorElSub({ [page.id]: event.currentTarget });
+  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+  const handleCloseSubMenu = () => {
+    setAnchorElSub(null);
   };
 
   const navClick = page => {
@@ -89,11 +99,20 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' }
               }}
             >
-              {pages.map(page => (
-                <MenuItem key={page.id} onClick={() => navClick(page)}>
-                  <Typography textAlign="center">{page.id}</Typography>
-                </MenuItem>
-              ))}
+              {pages.map(page => {
+                if (page.subItems) {
+                  return (
+                    <MenuItem key={page.id} onClick={() => navClick(page)}>
+                      <Typography textAlign="center">{page.id}</Typography>
+                    </MenuItem>
+                  );
+                }
+                return (
+                  <MenuItem key={page.id} onClick={() => navClick(page)}>
+                    <Typography textAlign="center">{page.id}</Typography>
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
           <Typography
@@ -105,15 +124,52 @@ const ResponsiveAppBar = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map(page => (
-              <Button
-                key={page.id}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page.id}
-              </Button>
-            ))}
+            {pages.map(page => {
+              if (page.subItems) {
+                return (
+                  <Box sx={{ flexGrow: 0 }}>
+                    <Button
+                      key={page.id}
+                      onClick={evt => handleOpenSubMenu(evt, page)}
+                      sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                      {page.id}
+                    </Button>
+                    <Menu
+                      sx={{ mt: '', boxShadow: 'none' }}
+                      id="menu-appbar"
+                      anchorEl={anchorElSub && anchorElSub[page.id]}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center'
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center'
+                      }}
+                      open={Boolean(anchorElSub && anchorElSub[page.id])}
+                      onClose={handleCloseSubMenu}
+                    >
+                      {page.subItems.map(item => (
+                        <MenuItem key={item} onClick={handleCloseSubMenu}>
+                          <Typography textAlign="center">{item}</Typography>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+                );
+              }
+              return (
+                <Button
+                  key={page.id}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page.id}
+                </Button>
+              );
+            })}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

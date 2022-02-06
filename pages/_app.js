@@ -19,7 +19,18 @@ const globalTheme = createTheme({
       main: '#1e2125',
       light: '#e2e5e9',
       dark: '#0f1011'
-    }
+    },
+    background: {
+      paper: '#1e2125',
+      default: '#1e2125'
+    },
+    text: {
+      primary: '#fff',
+      secondary: 'rgba(255, 255, 255, 0.7',
+      disabled: 'rgba(255, 255, 255, 0.5',
+      icon: 'rgba(255, 255, 255, 0.5'
+    },
+    divider: 'rgba(255, 255, 255, 0.12'
   }
 });
 
