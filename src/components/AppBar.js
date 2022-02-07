@@ -9,8 +9,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import { styled } from '@mui/material/styles';
 
 const pages = [
   { id: 'HOME' },
@@ -47,6 +49,18 @@ const ResponsiveAppBar = () => {
   const navClick = page => {
     handleCloseNavMenu();
   };
+
+  const HtmlTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: '#f5f5f9',
+      color: 'rgba(0, 0, 0, 0.87)',
+      maxWidth: 220,
+      fontSize: theme.typography.pxToRem(12),
+      border: '1px solid #dadde9'
+    }
+  }));
 
   return (
     <AppBar position="static">
@@ -127,36 +141,48 @@ const ResponsiveAppBar = () => {
             {pages.map(page => {
               if (page.subItems) {
                 return (
-                  <Box sx={{ flexGrow: 0 }}>
-                    <Button
-                      key={page.id}
-                      onClick={evt => handleOpenSubMenu(evt, page)}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
+                  <Box
+                    sx={{ flexGrow: 0 }}
+                    onMouseLeave={() => console.log('out box')}
+                  >
+                    <HtmlTooltip
+                      title={
+                        <React.Fragment>
+                          <MenuList
+                            sx={{ mt: '', boxShadow: 'none' }}
+                            id="menu-appbar"
+                          >
+                            {page.subItems.map(item => (
+                              <MenuItem key={item} onClick={handleCloseSubMenu}>
+                                <Typography
+                                  textAlign="center"
+                                  sx={{
+                                    fontWeight: 300,
+                                    '&:hover': {
+                                      fontWeight: 500
+                                    }
+                                  }}
+                                >
+                                  {item}
+                                </Typography>
+                              </MenuItem>
+                            ))}
+                          </MenuList>
+                        </React.Fragment>
+                      }
                     >
-                      {page.id}
-                    </Button>
-                    <Menu
-                      sx={{ mt: '', boxShadow: 'none' }}
-                      id="menu-appbar"
-                      anchorEl={anchorElSub && anchorElSub[page.id]}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center'
-                      }}
-                      keepMounted
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center'
-                      }}
-                      open={Boolean(anchorElSub && anchorElSub[page.id])}
-                      onClose={handleCloseSubMenu}
-                    >
-                      {page.subItems.map(item => (
-                        <MenuItem key={item} onClick={handleCloseSubMenu}>
-                          <Typography textAlign="center">{item}</Typography>
-                        </MenuItem>
-                      ))}
-                    </Menu>
+                      <Button
+                        key={page.id}
+                        sx={{
+                          my: 2,
+                          color: 'white',
+                          display: 'block',
+                          fontWeight: 300
+                        }}
+                      >
+                        {page.id}
+                      </Button>
+                    </HtmlTooltip>
                   </Box>
                 );
               }
@@ -164,7 +190,15 @@ const ResponsiveAppBar = () => {
                 <Button
                   key={page.id}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{
+                    my: 2,
+                    color: 'white',
+                    display: 'block',
+                    fontWeight: 300,
+                    '&:hover': {
+                      fontWeight: 500
+                    }
+                  }}
                 >
                   {page.id}
                 </Button>
