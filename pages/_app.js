@@ -44,7 +44,7 @@ function VetApp({ Component, pageProps }) {
       <CssBaseline />
       <ThemeProvider theme={globalTheme}>
         <AppBar />
-        <Component {...pageProps} />
+        {/* <Component {...pageProps} /> */}
       </ThemeProvider>
     </div>
   );
