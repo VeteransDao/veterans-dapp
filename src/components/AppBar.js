@@ -17,8 +17,16 @@ import { styled } from '@mui/material/styles';
 
 const pages = [
   { id: 'HOME', path: '/' },
-  { id: 'COLLECTIONS', subItems: ['US FIGHTER SERIES', 'AIR MEDAL'] },
-  { id: 'GUIDES', subItems: ['MINTING', 'ROLLOUT', 'FAQS', 'CONTACT'] }
+  {
+    id: 'COLLECTIONS',
+    subItems: ['US FIGHTER SERIES', 'AIR MEDAL'],
+    path: '/collections'
+  },
+  {
+    id: 'GUIDES',
+    subItems: ['MINTING', 'ROLLOUT', 'FAQS', 'CONTACT'],
+    path: '/guides'
+  }
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -176,6 +184,10 @@ const getFontWeight = page => {
   let fontWeight = 300;
   if (router.pathname == page.path) {
     fontWeight = 500;
+  } else if (page.subItems) {
+    if (router.pathname.startsWith(page.path)) {
+      fontWeight = 500;
+    }
   }
   return fontWeight;
 };
