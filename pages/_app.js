@@ -7,6 +7,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import AppBar from '../src/components/AppBar';
+import store from '../src/redux/store';
+import { Provider } from 'react-redux';
 // import App from 'next/app'
 
 // Dark Color - rgb(30, 33, 37)
@@ -44,7 +46,9 @@ function VetApp({ Component, pageProps }) {
       <CssBaseline />
       <ThemeProvider theme={globalTheme}>
         <AppBar />
-        {/* <Component {...pageProps} /> */}
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
       </ThemeProvider>
     </div>
   );

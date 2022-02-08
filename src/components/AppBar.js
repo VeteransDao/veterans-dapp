@@ -14,6 +14,7 @@ import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { styled } from '@mui/material/styles';
+import { route } from 'next/dist/server/router';
 
 const pages = [
   { id: 'HOME', path: '/' },
@@ -167,6 +168,10 @@ const WalletConnect = () => {
   );
 };
 
+const formatUrl = raw => {
+  return raw.toLowerCase().replace(/\s/g, '-');
+};
+
 const WebMenu = () => {
   const HtmlTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -205,7 +210,9 @@ const WebMenu = () => {
                         return (
                           <MenuItem
                             key={item}
-                            onClick={() => console.log('click')}
+                            onClick={() =>
+                              router.push(formatUrl(`/${page.id}/${item}`))
+                            }
                           >
                             <Typography
                               textAlign="center"
@@ -236,7 +243,7 @@ const WebMenu = () => {
                     fontWeight: fontWeight
                   }}
                 >
-                  {page.id}
+                  {formatUrl(page.id)}
                 </Button>
               </HtmlTooltip>
             </Box>
@@ -245,7 +252,7 @@ const WebMenu = () => {
         return (
           <Button
             key={page.id}
-            onClick={() => console.log('button') /*handleCloseNavMenu*/}
+            onClick={() => router.push(`/${page.id.toLowerCase()}`)}
             sx={{
               my: 2,
               color: 'white',
