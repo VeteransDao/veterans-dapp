@@ -14,12 +14,11 @@ import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { styled } from '@mui/material/styles';
-import { route } from 'next/dist/server/router';
 
 const pages = [
   { id: 'HOME', path: '/' },
   { id: 'COLLECTIONS', subItems: ['US FIGHTER SERIES', 'AIR MEDAL'] },
-  { id: 'GUIDES', subItems: ['MINTING', 'ROLLOUT', 'FAQS'] }
+  { id: 'GUIDES', subItems: ['MINTING', 'ROLLOUT', 'FAQS', 'CONTACT'] }
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -172,99 +171,125 @@ const formatUrl = raw => {
   return raw.toLowerCase().replace(/\s/g, '-');
 };
 
-const WebMenu = () => {
-  const HtmlTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: '#1e2125',
-      maxWidth: 220,
-      border: 'none',
-      padding: '0px',
-      margin: '0px !important'
-    }
-  }));
+const getFontWeight = page => {
   const router = useRouter();
+  let fontWeight = 300;
+  if (router.pathname == page.path) {
+    fontWeight = 500;
+  }
+  return fontWeight;
+};
+
+// Home goes to route /, Others to ID
+const getPageRoute = page => {
+  const pageRoute = page.id === 'HOME' ? '' : page.id;
+  return pageRoute;
+};
+
+const SubItemMenu = ({ page }) => {
+  const router = useRouter();
+  const pageRoute = getPageRoute(page);
+  const fontWeight = getFontWeight(page);
+  return (
+    <Box sx={{ flexGrow: 0 }} key={page.id}>
+      <HtmlTooltip
+        title={
+          <React.Fragment>
+            <MenuList
+              sx={{
+                mt: '',
+                boxShadow: 'none',
+                padding: '0px'
+              }}
+              id="menu-appbar"
+            >
+              {page.subItems.map(item => {
+                return (
+                  <MenuItem
+                    key={item}
+                    onClick={() =>
+                      router.push(formatUrl(`/${pageRoute}/${item}`))
+                    }
+                  >
+                    <Typography
+                      textAlign="center"
+                      sx={{
+                        fontWeight: 300,
+                        color: '#fff',
+                        fontSize: '0.875rem',
+                        '&:hover': {
+                          fontWeight: 500
+                        }
+                      }}
+                    >
+                      {item}
+                    </Typography>
+                  </MenuItem>
+                );
+              })}
+            </MenuList>
+          </React.Fragment>
+        }
+      >
+        <Button
+          key={page.id}
+          sx={{
+            my: 2,
+            color: 'white',
+            display: 'block',
+            fontWeight: fontWeight
+          }}
+        >
+          {formatUrl(pageRoute)}
+        </Button>
+      </HtmlTooltip>
+    </Box>
+  );
+};
+
+const SingleItemMenu = ({ page }) => {
+  const router = useRouter();
+  const pageRoute = getPageRoute(page);
+  const fontWeight = getFontWeight(page);
+  return (
+    <Button
+      key={page.id}
+      onClick={() => router.push(`/${formatUrl(pageRoute)}`)}
+      sx={{
+        my: 2,
+        color: 'white',
+        display: 'block',
+        fontWeight: fontWeight,
+        '&:hover': {
+          fontWeight: 500
+        }
+      }}
+    >
+      {page.id}
+    </Button>
+  );
+};
+
+const HtmlTooltip = styled(({ className, ...props }) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: '#1e2125',
+    maxWidth: 220,
+    border: 'none',
+    padding: '0px',
+    margin: '0px !important'
+  }
+}));
+
+const WebMenu = () => {
   return (
     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
       {pages.map(page => {
-        let fontWeight = 300;
-        if (router.pathname == page.path) {
-          fontWeight = 500;
-        }
-        if (page.subItems) {
-          return (
-            <Box sx={{ flexGrow: 0 }} key={page.id}>
-              <HtmlTooltip
-                title={
-                  <React.Fragment>
-                    <MenuList
-                      sx={{
-                        mt: '',
-                        boxShadow: 'none',
-                        padding: '0px'
-                      }}
-                      id="menu-appbar"
-                    >
-                      {page.subItems.map(item => {
-                        return (
-                          <MenuItem
-                            key={item}
-                            onClick={() =>
-                              router.push(formatUrl(`/${page.id}/${item}`))
-                            }
-                          >
-                            <Typography
-                              textAlign="center"
-                              sx={{
-                                fontWeight: 300,
-                                color: '#fff',
-                                fontSize: '0.875rem',
-                                '&:hover': {
-                                  fontWeight: 500
-                                }
-                              }}
-                            >
-                              {item}
-                            </Typography>
-                          </MenuItem>
-                        );
-                      })}
-                    </MenuList>
-                  </React.Fragment>
-                }
-              >
-                <Button
-                  key={page.id}
-                  sx={{
-                    my: 2,
-                    color: 'white',
-                    display: 'block',
-                    fontWeight: fontWeight
-                  }}
-                >
-                  {formatUrl(page.id)}
-                </Button>
-              </HtmlTooltip>
-            </Box>
-          );
-        }
-        return (
-          <Button
-            key={page.id}
-            onClick={() => router.push(`/${page.id.toLowerCase()}`)}
-            sx={{
-              my: 2,
-              color: 'white',
-              display: 'block',
-              fontWeight: fontWeight,
-              '&:hover': {
-                fontWeight: 500
-              }
-            }}
-          >
-            {page.id}
-          </Button>
+        return page.subItems ? (
+          <SubItemMenu page={page} key={page.id} />
+        ) : (
+          <SingleItemMenu page={page} key={page.id} />
         );
       })}
     </Box>
