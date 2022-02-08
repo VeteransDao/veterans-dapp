@@ -99,19 +99,45 @@ const MobileMenu = () => {
         open={Boolean(anchorElNav)}
         onClose={handleCloseNavMenu}
         sx={{
+          '& .MuiPaper-root': {
+            width: '100vw',
+            height: '100vh',
+            marginTop: '36px',
+            textAlign: 'center'
+          },
           display: { xs: 'block', md: 'none' }
         }}
       >
+        <MenuItem key="vetdao logo" sx={{ justifyContent: 'center' }}>
+          <Typography
+            variant="h5"
+            noWrap
+            component="h5"
+            sx={{
+              fontFamily: 'Trade Winds'
+            }}
+          >
+            veterans dao
+          </Typography>
+        </MenuItem>
         {pages.map(page => {
           if (page.subItems) {
             return (
-              <MenuItem key={page.id} onClick={() => navClick(page)}>
+              <MenuItem
+                key={page.id}
+                onClick={() => navClick(page)}
+                sx={{ justifyContent: 'center' }}
+              >
                 <Typography textAlign="center">{page.id}</Typography>
               </MenuItem>
             );
           }
           return (
-            <MenuItem key={page.id} onClick={() => navClick(page)}>
+            <MenuItem
+              key={page.id}
+              onClick={() => navClick(page)}
+              sx={{ justifyContent: 'center' }}
+            >
               <Typography textAlign="center">{page.id}</Typography>
             </MenuItem>
           );
