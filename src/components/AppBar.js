@@ -1,19 +1,24 @@
 import * as React from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import { styled } from '@mui/material/styles';
+import DiscordLite from '../../public/images/discord-light.png';
+import TwitterLite from '../../public/images/twitter-light.png';
+import InstagramLite from '../../public/images/instagram-light.png';
+import OpenseaLite from '../../public/images/opensea-light.png';
 
 const pages = [
   { id: 'HOME', path: '/' },
@@ -132,45 +137,67 @@ const MobileLogo = () => {
   );
 };
 
+const SocialButtons = () => {
+  return (
+    <Stack direction="row" sx={{ marginRight: '16px' }}>
+      <IconButton
+        aria-label="discord button"
+        color="primary"
+        onClick={() => console.log('discord')}
+      >
+        <Image src={DiscordLite} alt="discord image" width={24} height={27} />
+      </IconButton>
+      <IconButton
+        aria-label="twitter button"
+        color="primary"
+        onClick={() => console.log('twitter')}
+      >
+        <Image src={TwitterLite} alt="twitter image" width={20} height={16} />
+      </IconButton>
+      <IconButton
+        aria-label="instagram button"
+        color="primary"
+        onClick={() => console.log('instagram')}
+      >
+        <Image
+          src={InstagramLite}
+          alt="instagram image"
+          width={20}
+          height={20}
+        />
+      </IconButton>
+      <IconButton
+        aria-label="opensea button"
+        color="primary"
+        onClick={() => console.log('opensea')}
+      >
+        <Image src={OpenseaLite} alt="opensea image" width={22} height={22} />
+      </IconButton>
+    </Stack>
+  );
+};
+
 const WalletConnect = () => {
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  const handleOpenUserMenu = event => {
-    setAnchorElUser(event.currentTarget);
-  };
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   return (
     <Box sx={{ flexGrow: 0 }}>
-      <Tooltip title="Open settings">
-        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-        </IconButton>
-      </Tooltip>
-      <Menu
-        sx={{ mt: '45px' }}
-        id="menu-appbar"
-        anchorEl={anchorElUser}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
+      <Button
+        variant="outlined"
+        sx={{
+          width: '160px',
+          color: '#fff',
+          fontWeight: 300,
+          border: '1px solid rgba(255, 255, 255, 0.5)',
+          '&:hover': {
+            border: '1px solid rgba(255, 255, 255, 1)',
+            fontWeight: 500
+          }
         }}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
+        onClick={() => {
+          console.log('Launch metamask connect (in App)');
         }}
-        open={Boolean(anchorElUser)}
-        onClose={handleCloseUserMenu}
       >
-        {settings.map(setting => (
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">{setting}</Typography>
-          </MenuItem>
-        ))}
-      </Menu>
+        Connect Wallet
+      </Button>
     </Box>
   );
 };
@@ -317,6 +344,7 @@ const ResponsiveAppBar = () => {
           <MobileMenu />
           <MobileLogo />
           <WebMenu />
+          <SocialButtons />
           <WalletConnect />
         </Toolbar>
       </Container>
