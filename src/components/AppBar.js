@@ -121,25 +121,12 @@ const MobileMenu = () => {
   );
 };
 
-const MobileLogo = () => {
-  return (
-    <Typography
-      variant="h6"
-      noWrap
-      component="div"
-      sx={{
-        flexGrow: 1,
-        display: { xs: 'flex', md: 'none', fontFamily: 'Trade Winds' }
-      }}
-    >
-      Vet DAO
-    </Typography>
-  );
-};
-
 const SocialButtons = () => {
   return (
-    <Stack direction="row" sx={{ marginRight: '16px' }}>
+    <Stack
+      direction="row"
+      sx={{ marginRight: '16px', display: { xs: 'none', md: 'flex' } }}
+    >
       <IconButton
         aria-label="discord button"
         color="primary"
@@ -342,7 +329,6 @@ const ResponsiveAppBar = () => {
         <Toolbar disableGutters>
           <VetDaoLogo />
           <MobileMenu />
-          <MobileLogo />
           <WebMenu />
           <SocialButtons />
           <WalletConnect />
