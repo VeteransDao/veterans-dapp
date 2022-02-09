@@ -53,14 +53,16 @@ const VetDaoLogo = () => {
 };
 
 const MobileMenu = () => {
+  const router = useRouter();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
   const handleOpenNavMenu = event => {
     setAnchorElNav(event.currentTarget);
   };
 
-  const navClick = page => {
+  const navClick = route => {
     handleCloseNavMenu();
+    router.push(formatUrl(route));
   };
 
   const handleCloseNavMenu = () => {
@@ -121,37 +123,60 @@ const MobileMenu = () => {
           </Typography>
         </MenuItem>
         {pages.map(page => {
+          const pageRoute = getPageRoute(page);
           if (page.subItems) {
-            return (
+            const pageItem = [
               <MenuItem
                 key={page.id}
-                onClick={() => navClick(page)}
-                sx={{ justifyContent: 'center' }}
+                sx={{
+                  justifyContent: 'center',
+                  marginBottom: '-16px',
+                  fontSize: '0.8em',
+                  opacity: '0.5'
+                }}
               >
                 <Typography textAlign="center">{page.id}</Typography>
               </MenuItem>
-            );
+            ];
+            const subItems = page.subItems.map(item => {
+              return (
+                <MenuItem
+                  key={item}
+                  onClick={() => navClick(`/${pageRoute}/${item}`)}
+                  sx={{ justifyContent: 'center' }}
+                >
+                  <Typography textAlign="center">{item}</Typography>
+                </MenuItem>
+              );
+            });
+            const items = pageItem.concat(subItems);
+            return items;
           }
           return (
             <MenuItem
               key={page.id}
-              onClick={() => navClick(page)}
+              onClick={() => navClick(`/${pageRoute}`)}
               sx={{ justifyContent: 'center' }}
             >
               <Typography textAlign="center">{page.id}</Typography>
             </MenuItem>
           );
         })}
+        <MenuItem sx={{ justifyContent: 'center' }}>
+          <SocialButtons show={true} />
+        </MenuItem>
       </Menu>
     </Box>
   );
 };
 
-const SocialButtons = () => {
+const SocialButtons = ({ show }) => {
+  const display = show ? {} : { xs: 'none', md: 'flex' };
   return (
     <Stack
       direction="row"
-      sx={{ marginRight: '16px', display: { xs: 'none', md: 'flex' } }}
+      justifyContent="center"
+      sx={{ marginRight: '16px', display }}
     >
       <IconButton
         aria-label="discord button"
